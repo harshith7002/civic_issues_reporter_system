@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import {
-  RiDashboardLine, RiAlertLine, RiCheckDoubleLine, RiLoader4Line,
-  RiMapPinLine, RiFilterLine, RiRefreshLine, RiEditLine,
+  RiDashboardLine, RiAlertLine, RiCheckDoubleLine, 
+  RiMapPinLine, RiFilterLine, RiRefreshLine, RiLogoutBoxRLine
 } from 'react-icons/ri';
 
 const API = 'http://localhost:8000';
@@ -19,7 +19,6 @@ const CATEGORY_META = {
 const STATUS_FLOW = ['reported', 'assigned', 'in_progress', 'resolved'];
 const STATUS_LABELS = { reported: 'Reported', assigned: 'Assigned', in_progress: 'In Progress', resolved: 'Resolved' };
 
-// Generate demo data for offline use
 function genDemo() {
   const cats = Object.keys(CATEGORY_META);
   const statuses = STATUS_FLOW;
@@ -34,13 +33,10 @@ function genDemo() {
     status: statuses[i % statuses.length],
     city: cities[i % cities.length],
     address: `${['MG Road', 'Park Street', 'Link Road', 'Station Road'][i % 4]}, ${cities[i % cities.length]}`,
-    latitude: 19.07 + (Math.random() - 0.5) * 0.1,
-    longitude: 72.87 + (Math.random() - 0.5) * 0.1,
     municipality_name: ['BMC', 'MCD', 'BBMP', 'GCC', 'GHMC'][i % 5],
     department: ['Road Department', 'Sanitation Department', 'Electricity Department'][i % 3],
     confidence: 0.75 + Math.random() * 0.2,
     created_at: new Date(Date.now() - i * 3600000 * 4).toISOString(),
-    image_url: null,
   }));
 }
 
@@ -51,6 +47,11 @@ export default function Admin() {
   const [filterCat, setFilterCat] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [updating, setUpdating] = useState(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem("js_admin");
+    window.location.reload(); 
+  };
 
   const load = async () => {
     setLoading(true);
@@ -64,13 +65,12 @@ export default function Admin() {
     } catch {
       const demo = genDemo();
       setComplaints(demo);
-      const byCat = {}, byStat = {}, byCity = {};
+      const byCat = {}, byStat = {};
       demo.forEach(c => {
         byCat[c.category] = (byCat[c.category] || 0) + 1;
         byStat[c.status] = (byStat[c.status] || 0) + 1;
-        byCity[c.city] = (byCity[c.city] || 0) + 1;
       });
-      setStats({ total: demo.length, by_category: byCat, by_status: byStat, by_city: byCity });
+      setStats({ total: demo.length, by_category: byCat, by_status: byStat });
     } finally {
       setLoading(false);
     }
@@ -108,6 +108,7 @@ export default function Admin() {
   return (
     <div style={{ minHeight: '100vh', padding: '88px 24px 60px', maxWidth: 1300, margin: '0 auto' }}>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 36, flexWrap: 'wrap', gap: 16 }}>
           <div>
@@ -118,69 +119,47 @@ export default function Admin() {
               Municipal staff portal — Jan Sahayak
             </p>
           </div>
-          <button onClick={load} style={{
-            background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.2)',
-            color: '#00d4ff', borderRadius: 10, padding: '10px 18px',
-            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.875rem',
-          }}>
-            <RiRefreshLine /> Refresh
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button onClick={load} style={{
+              background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.2)',
+              color: '#00d4ff', borderRadius: 10, padding: '10px 18px',
+              cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.875rem',
+            }}>
+              <RiRefreshLine /> Refresh
+            </button>
+            <button onClick={handleLogout} style={{
+              background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)',
+              color: '#ef4444', borderRadius: 10, padding: '10px 18px',
+              cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.875rem',
+            }}>
+              <RiLogoutBoxRLine /> Logout
+            </button>
+          </div>
         </div>
 
-        {/* Stats */}
+        {/* Stats Section */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 32 }}>
           {statCards.map(({ label, value, icon, color }, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-              style={{
-                background: 'rgba(13,24,41,0.7)',
-                border: `1px solid ${color}20`,
-                borderRadius: 18, padding: '22px 24px',
-              }}
-            >
-              <div style={{
-                width: 40, height: 40, borderRadius: 12,
-                background: `${color}15`, border: `1px solid ${color}25`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color, fontSize: 18, marginBottom: 14,
-              }}>{icon}</div>
-              <div style={{ fontSize: '2rem', fontFamily: 'var(--font-display)', fontWeight: 800, color, lineHeight: 1 }}>
-                {value}
-              </div>
-              <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem', marginTop: 6 }}>{label}</div>
-            </motion.div>
+            <div key={i} style={{ background: 'rgba(13,24,41,0.7)', border: `1px solid ${color}20`, borderRadius: 18, padding: '22px 24px' }}>
+              <div style={{ width: 40, height: 40, borderRadius: 12, background: `${color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color, marginBottom: 14 }}>{icon}</div>
+              <div style={{ fontSize: '2rem', fontWeight: 800, color }}>{value}</div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{label}</div>
+            </div>
           ))}
         </div>
 
-        {/* Category breakdown */}
+        {/* Categories Section */}
         {stats?.by_category && (
-          <div style={{
-            background: 'rgba(13,24,41,0.7)', border: '1px solid rgba(0,212,255,0.08)',
-            borderRadius: 18, padding: '24px', marginBottom: 32,
-          }}>
-            <h3 style={{ fontWeight: 700, marginBottom: 18, fontSize: '1rem' }}>Issues by Category</h3>
+          <div style={{ background: 'rgba(13,24,41,0.7)', border: '1px solid rgba(0,212,255,0.08)', borderRadius: 18, padding: '24px', marginBottom: 32 }}>
+            <h3 style={{ fontWeight: 700, marginBottom: 18 }}>Issues by Category</h3>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               {Object.entries(stats.by_category).map(([cat, count]) => {
                 const meta = CATEGORY_META[cat];
                 if (!meta) return null;
-                const total = stats.total || 1;
                 return (
-                  <div key={cat} style={{
-                    flex: '1 1 140px',
-                    background: `${meta.color}10`, border: `1px solid ${meta.color}25`,
-                    borderRadius: 12, padding: '14px',
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                      <span style={{ fontSize: '1.2rem' }}>{meta.emoji}</span>
-                      <span style={{ fontSize: '0.8rem', color: meta.color, fontWeight: 600 }}>{meta.label}</span>
-                    </div>
+                  <div key={cat} style={{ flex: '1 1 140px', background: `${meta.color}10`, border: `1px solid ${meta.color}25`, borderRadius: 12, padding: '14px' }}>
+                    <div style={{ display: 'flex', gap: 8, color: meta.color, fontWeight: 600 }}><span>{meta.emoji}</span>{meta.label}</div>
                     <div style={{ fontSize: '1.5rem', fontWeight: 800, color: meta.color }}>{count}</div>
-                    <div style={{ height: 4, background: 'rgba(255,255,255,0.05)', borderRadius: 2, marginTop: 8 }}>
-                      <div style={{ height: '100%', width: `${(count / total) * 100}%`, background: meta.color, borderRadius: 2 }} />
-                    </div>
                   </div>
                 );
               })}
@@ -188,136 +167,42 @@ export default function Admin() {
           </div>
         )}
 
-        {/* Filters */}
-        <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
-          <RiFilterLine style={{ color: 'var(--text-muted)' }} />
-          <select
-            value={filterCat}
-            onChange={e => setFilterCat(e.target.value)}
-            style={{ background: 'rgba(13,24,41,0.9)', border: '1px solid rgba(0,212,255,0.15)', color: '#fff', borderRadius: 10, padding: '8px 14px', cursor: 'pointer', fontSize: '0.85rem' }}
-          >
-            <option value="all">All Categories</option>
-            {Object.entries(CATEGORY_META).map(([k, v]) => (
-              <option key={k} value={k}>{v.emoji} {v.label}</option>
-            ))}
+        {/* Filters and Table */}
+        <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
+          <select value={filterCat} onChange={e => setFilterCat(e.target.value)} style={{ background: '#0d1829', color: '#fff', padding: '8px', borderRadius: '8px' }}>
+             <option value="all">All Categories</option>
+             {Object.keys(CATEGORY_META).map(k => <option value={k}>{CATEGORY_META[k].label}</option>)}
           </select>
-          <select
-            value={filterStatus}
-            onChange={e => setFilterStatus(e.target.value)}
-            style={{ background: 'rgba(13,24,41,0.9)', border: '1px solid rgba(0,212,255,0.15)', color: '#fff', borderRadius: 10, padding: '8px 14px', cursor: 'pointer', fontSize: '0.85rem' }}
-          >
-            <option value="all">All Statuses</option>
-            {STATUS_FLOW.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
-          </select>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-            Showing {filtered.length} of {complaints.length}
-          </span>
         </div>
 
-        {/* Table */}
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: 60 }}>
-            <div className="spinner" style={{ margin: '0 auto' }} />
-          </div>
-        ) : (
-          <div style={{ background: 'rgba(13,24,41,0.7)', border: '1px solid rgba(0,212,255,0.08)', borderRadius: 18, overflow: 'hidden' }}>
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
-                <thead>
-                  <tr style={{ background: 'rgba(0,212,255,0.04)', borderBottom: '1px solid rgba(0,212,255,0.08)' }}>
-                    {['ID', 'Reported By', 'Category', 'Location', 'Municipality', 'Status', 'Date', 'Action'].map(h => (
-                      <th key={h} style={{ padding: '14px 16px', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map((c, i) => {
-                    const meta = CATEGORY_META[c.category] || { emoji: '⚠️', color: '#fff', label: c.category };
-                    return (
-                      <motion.tr
-                        key={c.complaint_id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.02 }}
-                        style={{
-                          borderBottom: '1px solid rgba(255,255,255,0.04)',
-                          transition: 'background 0.2s',
-                        }}
-                        onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,212,255,0.03)'}
-                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                      >
-                        <td style={{ padding: '14px 16px', color: 'var(--text-muted)', fontFamily: 'monospace', fontSize: '0.75rem' }}>
-                          {c.complaint_id?.slice(-8)}
-                        </td>
-                        <td style={{ padding: '14px 16px' }}>
-                          <div style={{ fontWeight: 600 }}>{c.user_name}</div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{c.mobile_number}</div>
-                        </td>
-                        <td style={{ padding: '14px 16px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                            <span>{meta.emoji}</span>
-                            <span style={{ color: meta.color, fontWeight: 600 }}>{meta.label}</span>
-                          </div>
-                          {c.confidence && (
-                            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                              {Math.round(c.confidence * 100)}% AI
-                            </div>
-                          )}
-                        </td>
-                        <td style={{ padding: '14px 16px', maxWidth: 180 }}>
-                          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
-                            <RiMapPinLine style={{ color: '#00d4ff', flexShrink: 0, marginTop: 2 }} />
-                            <div>
-                              <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', lineHeight: 1.4 }}>
-                                {c.address?.slice(0, 50)}{c.address?.length > 50 ? '...' : ''}
-                              </div>
-                              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{c.city}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td style={{ padding: '14px 16px' }}>
-                          <div style={{ fontSize: '0.82rem', fontWeight: 600 }}>{c.municipality_name}</div>
-                          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{c.department}</div>
-                        </td>
-                        <td style={{ padding: '14px 16px' }}>
-                          <span className={`badge badge-${c.status}`}>
-                            {STATUS_LABELS[c.status] || c.status}
-                          </span>
-                        </td>
-                        <td style={{ padding: '14px 16px', color: 'var(--text-muted)', fontSize: '0.78rem', whiteSpace: 'nowrap' }}>
-                          {c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: '2-digit' }) : '-'}
-                        </td>
-                        <td style={{ padding: '14px 16px' }}>
-                          <select
-                            value={c.status}
-                            disabled={updating === c.complaint_id}
-                            onChange={e => updateStatus(c.complaint_id, e.target.value)}
-                            style={{
-                              background: 'rgba(0,212,255,0.08)',
-                              border: '1px solid rgba(0,212,255,0.2)',
-                              color: '#00d4ff', borderRadius: 8, padding: '6px 10px',
-                              cursor: 'pointer', fontSize: '0.78rem',
-                              opacity: updating === c.complaint_id ? 0.5 : 1,
-                            }}
-                          >
-                            {STATUS_FLOW.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
-                          </select>
-                        </td>
-                      </motion.tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-            {filtered.length === 0 && (
-              <div style={{ textAlign: 'center', padding: '48px', color: 'var(--text-muted)' }}>
-                No complaints match the current filters.
-              </div>
-            )}
-          </div>
-        )}
+        <div style={{ background: 'rgba(13,24,41,0.7)', border: '1px solid rgba(0,212,255,0.08)', borderRadius: 18, overflow: 'hidden' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: 'rgba(0,212,255,0.04)', color: 'var(--text-muted)' }}>
+                <th style={{ padding: '16px', textAlign: 'left' }}>ID</th>
+                <th style={{ padding: '16px', textAlign: 'left' }}>Reported By</th>
+                <th style={{ padding: '16px', textAlign: 'left' }}>Category</th>
+                <th style={{ padding: '16px', textAlign: 'left' }}>Status</th>
+                <th style={{ padding: '16px', textAlign: 'left' }}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(c => (
+                <tr key={c.complaint_id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                  <td style={{ padding: '16px', fontFamily: 'monospace' }}>{c.complaint_id.slice(-6)}</td>
+                  <td style={{ padding: '16px' }}>{c.user_name}</td>
+                  <td style={{ padding: '16px', color: CATEGORY_META[c.category]?.color }}>{CATEGORY_META[c.category]?.label}</td>
+                  <td style={{ padding: '16px' }}>{STATUS_LABELS[c.status]}</td>
+                  <td style={{ padding: '16px' }}>
+                    <select value={c.status} onChange={e => updateStatus(c.complaint_id, e.target.value)} style={{ background: '#0d1829', color: '#00d4ff', border: '1px solid #00d4ff30', borderRadius: '6px' }}>
+                      {STATUS_FLOW.map(s => <option value={s}>{STATUS_LABELS[s]}</option>)}
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </motion.div>
     </div>
   );

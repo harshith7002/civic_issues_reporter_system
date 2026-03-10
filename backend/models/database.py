@@ -30,7 +30,7 @@ class Complaint(Base):
     municipality_email = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
+    feature_vector = Column(Text, nullable=True)
 
 class Municipality(Base):
     __tablename__ = "municipalities"
