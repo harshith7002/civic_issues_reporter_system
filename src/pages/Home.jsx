@@ -37,8 +37,8 @@ const HOW_IT_WORKS = [
 
 export default function Home() {
   return (
-    <div style={{ minHeight: '100vh', overflowX: 'hidden' }}>
-      {/* Hero */}
+    <div style={{ minHeight: '100vh', overflowX: 'hidden', backgroundColor: '#0f172a' }}>
+      {/* Hero Section */}
       <section style={{
         minHeight: '100vh',
         position: 'relative',
@@ -47,49 +47,35 @@ export default function Home() {
         justifyContent: 'center',
         overflow: 'hidden',
         padding: '80px 24px 60px',
+        // Updated: City Background with Overlay
+        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.7)), url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=2144&auto=format&fit=crop')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
       }}>
-        {/* Animated background */}
-        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-          {/* Grid */}
+        
+        {/* Animated UI Overlays */}
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', zIndex: 1 }}>
+          {/* Subtle Grid */}
           <div style={{
             position: 'absolute', inset: 0,
             backgroundImage: `
-              linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px)
+              linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px)
             `,
-            backgroundSize: '60px 60px',
+            backgroundSize: '80px 80px',
+            opacity: 0.3
           }} />
 
           {/* Glow orbs */}
           <motion.div
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 8, repeat: Infinity }}
             style={{
               position: 'absolute', top: '20%', left: '10%',
               width: 500, height: 500,
               background: 'radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%)',
               borderRadius: '50%', pointerEvents: 'none',
-            }}
-          />
-          <motion.div
-            animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
-            transition={{ duration: 10, repeat: Infinity, delay: 2 }}
-            style={{
-              position: 'absolute', bottom: '20%', right: '10%',
-              width: 400, height: 400,
-              background: 'radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, transparent 70%)',
-              borderRadius: '50%', pointerEvents: 'none',
-            }}
-          />
-          <motion.div
-            animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.3, 0.15] }}
-            transition={{ duration: 7, repeat: Infinity, delay: 4 }}
-            style={{
-              position: 'absolute', top: '60%', left: '50%',
-              width: 300, height: 300,
-              background: 'radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%)',
-              borderRadius: '50%', pointerEvents: 'none',
-              transform: 'translate(-50%, -50%)',
             }}
           />
         </div>
@@ -116,7 +102,7 @@ export default function Home() {
               fontSize: '2rem',
               filter: 'drop-shadow(0 0 12px rgba(0, 212, 255, 0.5))',
               pointerEvents: 'none',
-              zIndex: 1,
+              zIndex: 2,
             }}
           >
             {icon}
@@ -124,19 +110,20 @@ export default function Home() {
         ))}
 
         {/* Hero Content */}
-        <div style={{ textAlign: 'center', maxWidth: 800, position: 'relative', zIndex: 2 }}>
+        <div style={{ textAlign: 'center', maxWidth: 800, position: 'relative', zIndex: 3 }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
-              background: 'rgba(0, 212, 255, 0.08)',
-              border: '1px solid rgba(0, 212, 255, 0.2)',
+              background: 'rgba(0, 212, 255, 0.1)',
+              border: '1px solid rgba(0, 212, 255, 0.3)',
               borderRadius: 50, padding: '6px 18px',
               fontSize: '0.8rem', color: '#00d4ff',
               letterSpacing: '0.08em', textTransform: 'uppercase',
               marginBottom: 28, fontWeight: 600,
+              backdropFilter: 'blur(10px)'
             }}
           >
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00d4ff', animation: 'pulse-glow 2s infinite' }} />
@@ -153,6 +140,7 @@ export default function Home() {
               letterSpacing: '-0.03em',
               lineHeight: 1.05,
               marginBottom: 24,
+              color: '#ffffff'
             }}
           >
             Report Civic Issues.{' '}
@@ -171,7 +159,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             style={{
               fontSize: '1.15rem',
-              color: 'var(--text-secondary)',
+              color: 'rgba(255, 255, 255, 0.8)',
               maxWidth: 580,
               margin: '0 auto 40px',
               lineHeight: 1.7,
@@ -193,11 +181,9 @@ export default function Home() {
                 whileTap={{ scale: 0.97 }}
                 style={{
                   background: 'linear-gradient(135deg, #00d4ff, #0066ff)',
-                  color: '#000', fontFamily: 'var(--font-display)',
-                  fontWeight: 800, fontSize: '1rem', letterSpacing: '-0.01em',
+                  color: '#000', fontWeight: 800, fontSize: '1rem', 
                   padding: '16px 36px', borderRadius: 50, cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', gap: 10,
-                  boxShadow: '0 6px 24px rgba(0, 212, 255, 0.35)',
+                  display: 'flex', alignItems: 'center', gap: 10, border: 'none',
                 }}
               >
                 Report an Issue <RiArrowRightLine size={18} />
@@ -210,10 +196,9 @@ export default function Home() {
                 style={{
                   background: 'rgba(255,255,255,0.05)',
                   backdropFilter: 'blur(12px)',
-                  color: '#fff', fontFamily: 'var(--font-display)',
-                  fontWeight: 600, fontSize: '0.95rem',
+                  color: '#fff', fontWeight: 600, fontSize: '0.95rem',
                   padding: '16px 36px', borderRadius: 50, cursor: 'pointer',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.2)',
                   display: 'flex', alignItems: 'center', gap: 10,
                 }}
               >
@@ -224,14 +209,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats bar */}
+      {/* Stats Section */}
       <section style={{
-        background: 'rgba(0, 212, 255, 0.03)',
-        borderTop: '1px solid rgba(0, 212, 255, 0.08)',
-        borderBottom: '1px solid rgba(0, 212, 255, 0.08)',
-        padding: '40px 24px',
+        background: 'rgba(15, 23, 42, 0.9)',
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+        padding: '60px 24px',
       }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 32 }}>
           {STATS.map(({ value, label }, i) => (
             <motion.div
               key={i}
@@ -242,155 +227,62 @@ export default function Home() {
               style={{ textAlign: 'center' }}
             >
               <div style={{
-                fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-                fontFamily: 'var(--font-display)',
-                fontWeight: 800,
+                fontSize: '2.8rem', fontWeight: 800,
                 background: 'linear-gradient(135deg, #00d4ff, #fff)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>{value}</div>
-              <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: 4 }}>{label}</div>
+              <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem', marginTop: 4, textTransform: 'uppercase', letterSpacing: '1px' }}>{label}</div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Features */}
-      <section style={{ padding: '100px 24px', maxWidth: 1100, margin: '0 auto' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          style={{ textAlign: 'center', marginBottom: 64 }}
-        >
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 16 }}>
-            Everything you need to fix your city
+      {/* Features Grid */}
+      <section style={{ padding: '100px 24px', maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 64 }}>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, color: '#fff', marginBottom: 16 }}>
+            Empowering Smart Governance
           </h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: 500, margin: '0 auto', fontSize: '1.05rem' }}>
-            From AI-powered detection to real-time tracking, Jan Sahayak makes civic issue reporting effortless.
+          <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: 600, margin: '0 auto' }}>
+            Our platform bridges the gap between citizens and authorities using cutting-edge AI.
           </p>
-        </motion.div>
+        </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
           {FEATURES.map(({ icon, title, desc, color }, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              whileHover={{ y: -8, backgroundColor: 'rgba(255, 255, 255, 0.03)' }}
               style={{
-                background: 'var(--bg-glass)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid var(--border-glass)',
-                borderRadius: 20,
-                padding: '28px 28px',
-                cursor: 'default',
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                borderRadius: 24, padding: '32px',
+                transition: 'all 0.3s ease'
               }}
             >
               <div style={{
-                width: 52, height: 52,
-                borderRadius: 14,
-                background: `${color}18`,
-                border: `1px solid ${color}30`,
+                width: 56, height: 56, borderRadius: 16,
+                background: `${color}15`, color: color,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: color, marginBottom: 18,
+                marginBottom: 20, border: `1px solid ${color}30`
               }}>
                 {icon}
               </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: 10 }}>{title}</h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>{desc}</p>
+              <h3 style={{ color: '#fff', fontSize: '1.2rem', fontWeight: 700, marginBottom: 12 }}>{title}</h3>
+              <p style={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, fontSize: '0.95rem' }}>{desc}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* How it works */}
-      <section style={{
-        padding: '100px 24px',
-        background: 'rgba(0, 212, 255, 0.02)',
-        borderTop: '1px solid rgba(0, 212, 255, 0.06)',
-      }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: 64 }}
-          >
-            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 16 }}>
-              How it works
-            </h2>
-          </motion.div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 32 }}>
-            {HOW_IT_WORKS.map(({ step, title, desc }, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.12 }}
-                viewport={{ once: true }}
-                style={{ position: 'relative' }}
-              >
-                <div style={{
-                  fontSize: '3.5rem', fontFamily: 'var(--font-display)', fontWeight: 800,
-                  color: 'rgba(0, 212, 255, 0.1)', lineHeight: 1, marginBottom: 8,
-                }}>{step}</div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: 10, color: '#fff' }}>{title}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>{desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section style={{ padding: '100px 24px' }}>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          style={{
-            maxWidth: 700, margin: '0 auto', textAlign: 'center',
-            background: 'linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1))',
-            border: '1px solid rgba(0, 212, 255, 0.15)',
-            borderRadius: 32, padding: '64px 40px',
-            position: 'relative', overflow: 'hidden',
-          }}
-        >
-          <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: 16 }}>
-            See a problem? Report it now.
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: 36, fontSize: '1.05rem' }}>
-            Join thousands of citizens making Indian cities smarter, cleaner, and safer.
-          </p>
-          <Link to="/login">
-            <motion.button
-              whileHover={{ scale: 1.05, boxShadow: '0 12px 40px rgba(0, 212, 255, 0.4)' }}
-              whileTap={{ scale: 0.97 }}
-              style={{
-                background: 'linear-gradient(135deg, #00d4ff, #0066ff)',
-                color: '#000', fontFamily: 'var(--font-display)',
-                fontWeight: 800, fontSize: '1.05rem',
-                padding: '18px 44px', borderRadius: 50, cursor: 'pointer',
-                display: 'inline-flex', alignItems: 'center', gap: 10,
-              }}
-            >
-              Start Reporting <RiArrowRightLine size={20} />
-            </motion.button>
-          </Link>
-        </motion.div>
-      </section>
-
+      {/* Footer */}
       <footer style={{
-        borderTop: '1px solid rgba(0,212,255,0.06)',
-        padding: '32px 24px', textAlign: 'center',
-        color: 'var(--text-muted)', fontSize: '0.85rem',
+        padding: '40px 24px', textAlign: 'center',
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem'
       }}>
-        <strong style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-display)' }}>Jan Sahayak</strong>
-        {' '} — AI-Powered Civic Issue Platform • Built for Smart Indian Cities
+        <p>© 2026 Jan Sahayak Platform. Advancing Civic Accountability.</p>
       </footer>
     </div>
   );
