@@ -1,50 +1,87 @@
-import "./Login.css";
-import { useState } from "react";
+import React, { useState } from 'react';
+import { ShieldCheck } from 'lucide-react';
+import './Login.css';
 
-function Login(){
+const Login = ({ onLoginSuccess }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-const [name,setName] = useState("")
-const [phone,setPhone] = useState("")
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (username && password) {
+      onLoginSuccess();
+    }
+  };
 
-const submit=(e)=>{
-e.preventDefault()
-alert("Login successful")
-}
+  return (
+    <div className="login-page-container">
+      {/* Branding Section (Left) */}
+      <div className="branding-container">
+        <div className="trust-badge">
+          <ShieldCheck size={18} color="#ffffff" strokeWidth={2.5} />
+          <span>Official Civic Portal</span>
+        </div>
+        
+        <h1>Jan Sahayak</h1>
+        
+        <p className="tagline-primary">
+          Empowering citizens through AI-driven accountability.
+        </p>
+        
+        <p className="tagline-secondary">
+          Bridging the gap between citizens and governance through technology.
+        </p>
+      </div>
 
-return(
+      {/* Form Section (Right) */}
+      <div className="login-form-side">
+        <div className="login-card">
+          <div className="form-header">
+             <h2>Sign In</h2>
+             <p>Access your accountability dashboard</p>
+          </div>
+          
+          <form onSubmit={handleSubmit} className="professional-form">
+            <div className="form-field">
+              <label>Username</label>
+              <input 
+                type="text" 
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)} 
+                placeholder="Enter your username"
+                required 
+              />
+            </div>
+            <div className="form-field">
+              <label>Password</label>
+              <input 
+                type="password" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                placeholder="Enter your password"
+                required 
+              />
+            </div>
+            <button type="submit" className="login-btn">Sign In</button>
+          </form>
 
-<div className="login-page">
+          <div className="feature-highlight">
+            <h4>Platform Features</h4>
+            <ul>
+              <li>• AI-Powered Issue Categorization</li>
+              <li>• Real-time Official Tracking</li>
+              <li>• Citizen-led Resolution Verification</li>
+            </ul>
+          </div>
+          
+          <div className="login-footer">
+            <a href="#forgot" className="footer-link">Forgot Password?</a>
+            <p>New user? <a href="#register" className="footer-link highlight">Register here</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-<div className="login-box">
-
-<h2>Citizen Login</h2>
-
-<form onSubmit={submit}>
-
-<input
-type="text"
-placeholder="Full Name"
-value={name}
-onChange={(e)=>setName(e.target.value)}
-/>
-
-<input
-type="tel"
-placeholder="Phone Number"
-value={phone}
-onChange={(e)=>setPhone(e.target.value)}
-/>
-
-<button>Continue</button>
-
-</form>
-
-</div>
-
-</div>
-
-)
-
-}
-
-export default Login
+export default Login;
