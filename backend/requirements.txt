@@ -1,0 +1,23 @@
+# Core API
+fastapi==0.104.1
+uvicorn==0.24.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+
+# Image processing
+pillow==10.1.0
+numpy==1.24.3
+
+# AI / ML  — install one of:
+#   pip install tensorflow>=2.15          (Linux / Windows / Intel Mac)
+#   pip install tensorflow-macos          (Apple Silicon)
+tensorflow>=2.15.0
+
+# Utilities
+geopy==2.4.1
+aiofiles==23.2.1
+python-dotenv==1.0.0
+pydantic==2.5.0
+httpx==0.25.2
