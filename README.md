@@ -82,4 +82,43 @@ AI / ML
 ---
 
 ## 📊 Project Architecture
+React Frontend
+↓
+Flask REST API
+↓
+Database
+↓
+AI Classification Model
+
+
+---
+
+## 👨‍💻 Team
+
+- Sai Harshith Moluguri
+- Jay Mukati
+- Prithviraj Malhotra
+- Parishrut Singh
+
+---
+
+## 🏆 Hackathon
+
+This project was developed during **Make-A-Thon 2026 (ACM-W SRM)**.  
+Our team successfully advanced to the **Top 10 Finalists** in the competition.
+
+---
+
+## 📌 Future Improvements
+
+- Integration with government grievance portals
+- Automated issue prioritization
+- Smart city dashboard
+- Mobile application support
+
+---
+
+## 📜 License
+
+This project is open-source and available for learning and research purposes.
 
