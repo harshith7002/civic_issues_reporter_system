@@ -1,70 +1,85 @@
-# Getting Started with Create React App
+# Jan Sahayak – Civic Issue Reporting & Verification Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Jan Sahayak is a civic-tech platform that helps citizens report local civic issues such as potholes, garbage overflow, broken streetlights, or water leakage.  
+The system uses AI-assisted classification, geo-tagging, and community verification to improve transparency and ensure issues are actually resolved.
 
-## Available Scripts
+## 🚀 Problem
 
-In the project directory, you can run:
+Many existing civic grievance portals allow users to submit complaints, but they face several issues:
 
-### `npm start`
+- Complaints are sometimes marked **resolved even when the problem still exists**
+- **Location and image data may not reach field workers properly**
+- Lack of **transparency and accountability**
+- Citizens cannot verify whether the issue was actually fixed
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Jan Sahayak aims to solve these problems by adding a **verification and prioritization layer** on top of existing civic systems.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 💡 Solution
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Jan Sahayak introduces an AI-powered civic issue monitoring system that includes:
 
-### `npm run build`
+- 📍 **Geo-tagged issue reporting**
+- 📷 **Photo-based complaint submission**
+- 🤖 **AI classification of civic issues**
+- 🗺 **Map-based visualization of complaints**
+- ✅ **Citizen verification before closing complaints**
+- 👥 **Community validation for reported issues**
+- 📊 **Analytics dashboard for tracking resolution efficiency**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Instead of replacing government portals, this system acts as an **accountability and transparency layer**.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ⚙️ Tech Stack
 
-### `npm run eject`
+Frontend  
+- React.js  
+- CSS / Tailwind  
+- Framer Motion (animations)  
+- Leaflet.js (map visualization)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Backend  
+- Flask API (Python)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Database  
+- PostgreSQL / SQLite
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+AI / ML  
+- CNN-based image classification model  
+- Python (TensorFlow / Keras / Scikit-learn)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🖥️ Features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Citizen Side
+- Upload image of civic issue
+- Auto-detect issue type
+- Location tagging
+- Track complaint status
+- Community validation
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Admin / Authority Dashboard
+- View complaints on a map
+- Filter by issue type
+- Assign department
+- Update resolution status
+- Performance analytics
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🧠 How It Works
 
-### Analyzing the Bundle Size
+1. Citizen uploads issue with photo and location  
+2. AI model classifies the issue (road, sanitation, electricity, etc.)  
+3. Complaint appears on the city map  
+4. Authorities view complaints through dashboard  
+5. Issue is resolved by field workers  
+6. Citizen verifies the resolution before closure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 📊 Project Architecture
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
